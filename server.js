@@ -1,16 +1,10 @@
 const express = require('express');
-// const cors = require('cors');
 const bodyParser = require('body-parser');
-// const dotenv = require('dotenv');
 const csv = require('csvtojson');
 const request = require('request');
 
 const app = express();
 
-// Allows access from any server
-// app.use(cors());
-
-// parse requests of content-type - application/json
 app.use(bodyParser.json());
 
 app.get('/', (_req, res) => {
