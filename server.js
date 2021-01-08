@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const csv = require('csvtojson');
+const converter = require('csvtojson');
 const request = require('request');
 
 const app = express();
@@ -12,8 +12,24 @@ app.get('/', (_req, res) => {
 });
 app.post('/', async (req, res) => {
 	try {
-		const { url, select_fields } = req.body;
-		const json = await csv({
+        const { csv } = req.body;
+
+        if(!csv) {
+            return res.status(400).json({
+                message: 'csv object is required in the request payload',
+                status: 'error'
+            })
+        }
+        
+        const {url, select_fields} = csv;
+
+        if(!url) {
+            return res.status(400).json({
+                message: 'url is required',
+                status: 'error'
+            })
+        }
+		const json = await converter({
 			noheader: false,
 		}).fromStream(request.get(url));
 
